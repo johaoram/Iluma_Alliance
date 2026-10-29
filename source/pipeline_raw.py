@@ -1,19 +1,19 @@
 import os
 import pandas as pd
-from source.database import get_engine  # O simplemente from database import get_engine dependiendo de tu estructura de imports
+from source.database import get_engine
 
-# Rutas relativas
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CSV_PATH = os.path.join(BASE_DIR, "data_jobs.csv")
+# Obtener la ruta dinámica de la carpeta Descargas del usuario actual
+USER_HOME = os.path.expanduser("~")
+CSV_PATH = os.path.join(USER_HOME, "Downloads", "data_jobs.csv")
 
 def run_raw_ingestion():
-    """Lee el CSV desde la raíz y lo carga en bruto en la tabla raw.data_jobs_raw"""
+    """Lee el CSV desde la carpeta Descargas y lo carga en bruto en la tabla raw.data_jobs_raw"""
     if not os.path.exists(CSV_PATH):
-        print(f"❌ Error: No se encontró el archivo 'data_jobs.csv' en la ruta: {CSV_PATH}")
-        print("💡 Asegúrate de colocar el archivo CSV directamente en la raíz de tu proyecto.")
+        print(f"❌ Error: No se encontró el archivo 'data_jobs.csv' en Descargas: {CSV_PATH}")
+        print("💡 Asegúrate de que el archivo esté en tu carpeta Downloads.")
         return False
 
-    print(f"📂 Leyendo archivo CSV desde la raíz: {CSV_PATH}...")
+    print(f"📂 Leyendo archivo CSV desde Descargas: {CSV_PATH}...")
     df = pd.read_csv(CSV_PATH)
 
     engine = get_engine()
