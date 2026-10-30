@@ -3,13 +3,12 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# Cargar las variables de entorno desde el archivo .env ubicado en la raíz
-# (Buscamos un nivel arriba de 'source' para llegar a la raíz del proyecto)
+# Cargar las variables de entorno forzando la codificación utf-8 para evitar errores con tildes o símbolos
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENV_PATH = os.path.join(BASE_DIR, ".env")
-load_dotenv(ENV_PATH)
+load_dotenv(ENV_PATH, encoding="utf-8")
 
-# Obtener credenciales con valores por defecto de seguridad
+# Obtener credenciales
 DB_USER = os.getenv("DB_USER", "postgres")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "secretpassword")
 DB_HOST = os.getenv("DB_HOST", "localhost")
@@ -22,7 +21,6 @@ DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NA
 # Crear el motor de base de datos (Engine)
 engine = create_engine(DATABASE_URL, echo=False, future=True)
 
-# Fábrica de sesiones y base declarativa para modelos (por si se requieren más adelante)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
